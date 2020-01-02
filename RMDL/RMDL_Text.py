@@ -191,12 +191,12 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             print("DNN " + str(i))
             filepath = "weights\weights_DNN_" + str(i) + ".hdf5"
             checkpoint = ModelCheckpoint(filepath,
-                                         monitor='val_loss',
+                                         monitor='val_acc',
                                          verbose=1,
                                          save_weights_only = False,
                                          save_best_only=True,
                                          mode='min')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience = 10)
             callbacks_list = [checkpoint,es]
 
             model_DNN, model_tmp = BuildModel.Build_Model_DNN_Text(x_train_tfidf.shape[1],
@@ -271,12 +271,12 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             print("RNN " + str(i))
             filepath = "weights\weights_RNN_" + str(i) + ".hdf5"
             checkpoint = ModelCheckpoint(filepath,
-                                         monitor='val_loss',
+                                         monitor='val_acc',
                                          verbose=1,
                                          save_best_only=True,
                                          save_weights_only = False,
                                          mode='max')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience = 10)
             callbacks_list = [checkpoint,es]
 
             model_RNN, model_tmp = BuildModel.Build_Model_RNN_Text(word_index,
@@ -358,11 +358,11 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
 
 
             filepath = "weights\weights_CNN_" + str(i) + ".hdf5"
-            checkpoint = ModelCheckpoint(filepath, monitor='val_loss',
+            checkpoint = ModelCheckpoint(filepath, monitor='val_acc',
                                          save_weights_only = False, verbose=1, 
                                          save_best_only=True,
                                          mode='min')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='min', verbose=1, patience = 10)
             callbacks_list = [checkpoint,es]
 
             model_history = model_CNN.fit(x_train_embedded, y_train,
