@@ -191,11 +191,11 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             print("DNN " + str(i))
             filepath = "weights\weights_DNN_" + str(i) + ".hdf5"
             checkpoint = ModelCheckpoint(filepath,
-                                         monitor='val_acc',
+                                         monitor='val_loss',
                                          verbose=1,
                                          save_weights_only = False,
                                          save_best_only=True,
-                                         mode='max')
+                                         mode='min')
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 10)
             callbacks_list = [checkpoint,es]
 
@@ -215,6 +215,10 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                               callbacks=callbacks_list,
                               verbose=2)
             History.append(model_history)
+            #after history is done save the whole thing
+            filepath_full = "weights\weights_DNN_" + str(i) + ".h5"
+            model_DNN.save(filepath_full)
+            
 
             model_tmp.load_weights(filepath)
             if sparse_categorical:
@@ -266,7 +270,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             print("RNN " + str(i))
             filepath = "weights\weights_RNN_" + str(i) + ".hdf5"
             checkpoint = ModelCheckpoint(filepath,
-                                         monitor='val_acc',
+                                         monitor='val_loss',
                                          verbose=1,
                                          save_best_only=True,
                                          save_weights_only = False,
@@ -294,6 +298,9 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                               callbacks=callbacks_list,
                               verbose=2)
             History.append(model_history)
+            #after history is done save the whole thing
+            filepath_full = "weights\weights_RNN_" + str(i) + ".h5"
+            model_RNN.save(filepath_full)
 
             if sparse_categorical:
                 model_tmp.load_weights(filepath)
@@ -348,8 +355,10 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
 
 
             filepath = "weights\weights_CNN_" + str(i) + ".hdf5"
-            checkpoint = ModelCheckpoint(filepath, monitor='val_acc',save_weights_only = False, verbose=1, save_best_only=True,
-                                         mode='max')
+            checkpoint = ModelCheckpoint(filepath, monitor='val_loss',
+                                         save_weights_only = False, verbose=1, 
+                                         save_best_only=True,
+                                         mode='min')
             es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 10)
             callbacks_list = [checkpoint,es]
 
@@ -359,8 +368,12 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                           batch_size=batch_size,
                                           callbacks=callbacks_list,
                                           verbose=2)
+            
             History.append(model_history)
-
+            #after history is done save the whole thing
+            filepath_full = "weights\weights_CNN_" + str(i) + ".h5"
+            model_CNN.save(filepath_full)
+            
             model_tmp.load_weights(filepath)
             if sparse_categorical:
                 model_tmp.compile(loss='sparse_categorical_crossentropy',
