@@ -196,7 +196,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_weights_only = False,
                                          save_best_only=True,
                                          mode='min')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 10)
+            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
             callbacks_list = [checkpoint,es]
 
             model_DNN, model_tmp = BuildModel.Build_Model_DNN_Text(x_train_tfidf.shape[1],
@@ -216,7 +216,8 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                               verbose=2)
             History.append(model_history)
             #after history is done save the whole thing
-            filepath_full = "weights\weights_DNN_" + str(i) + ".h5"
+            filepath_full = "Model_Arch_DNN_" + str(i) + ".h5"
+            # and then load the weights saved above
             model_DNN.save(filepath_full)
             
 
@@ -275,7 +276,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_best_only=True,
                                          save_weights_only = False,
                                          mode='max')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 10)
+            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
             callbacks_list = [checkpoint,es]
 
             model_RNN, model_tmp = BuildModel.Build_Model_RNN_Text(word_index,
@@ -299,7 +300,9 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                               verbose=2)
             History.append(model_history)
             #after history is done save the whole thing
-            filepath_full = "weights\weights_RNN_" + str(i) + ".h5"
+            
+            filepath_full = "Model_Arch_RNN_" + str(i) + ".h5"
+            # and then load the weights saved above
             model_RNN.save(filepath_full)
 
             if sparse_categorical:
@@ -359,7 +362,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_weights_only = False, verbose=1, 
                                          save_best_only=True,
                                          mode='min')
-            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 10)
+            es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience = 20)
             callbacks_list = [checkpoint,es]
 
             model_history = model_CNN.fit(x_train_embedded, y_train,
@@ -371,7 +374,8 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             
             History.append(model_history)
             #after history is done save the whole thing
-            filepath_full = "weights\weights_CNN_" + str(i) + ".h5"
+            filepath_full = "Model_Arch_CNN_" + str(i) + ".h5"
+            # and then load the weights saved above
             model_CNN.save(filepath_full)
             
             model_tmp.load_weights(filepath)
