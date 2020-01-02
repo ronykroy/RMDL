@@ -216,9 +216,12 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                               verbose=2)
             History.append(model_history)
             #after history is done save the whole thing
-            filepath_full = "Model_Arch_DNN_" + str(i) + ".h5"
+            # json serialize
+            filepath_full = "Model_Arch_DNN_" + str(i) + ".json"
             # and then load the weights saved above
-            model_DNN.save(filepath_full)
+            model_json = model_DNN.to_json()
+            with open(filepath_full, "w") as json_file:
+                json_file.write(model_json)
             
 
             model_tmp.load_weights(filepath)
@@ -301,9 +304,12 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             History.append(model_history)
             #after history is done save the whole thing
             
-            filepath_full = "Model_Arch_RNN_" + str(i) + ".h5"
+            filepath_full = "Model_Arch_RNN_" + str(i) + ".json"
             # and then load the weights saved above
-            model_RNN.save(filepath_full)
+
+            model_json = model_RNN.to_json()
+            with open(filepath_full, "w") as json_file:
+                json_file.write(model_json)
 
             if sparse_categorical:
                 model_tmp.load_weights(filepath)
@@ -374,10 +380,14 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
             
             History.append(model_history)
             #after history is done save the whole thing
-            filepath_full = "Model_Arch_CNN_" + str(i) + ".h5"
+            filepath_full = "Model_Arch_CNN_" + str(i) + ".json"
             # and then load the weights saved above
-            model_CNN.save(filepath_full)
-            
+
+            model_json = model_CNN.to_json()
+            with open(filepath_full, "w") as json_file:
+                json_file.write(model_json)
+
+
             model_tmp.load_weights(filepath)
             if sparse_categorical:
                 model_tmp.compile(loss='sparse_categorical_crossentropy',
