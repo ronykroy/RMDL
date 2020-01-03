@@ -37,7 +37,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                         min_hidden_layer_dnn=1, max_hidden_layer_dnn=8, min_nodes_dnn=128, max_nodes_dnn=1024,
                         min_hidden_layer_rnn=1, max_hidden_layer_rnn=5, min_nodes_rnn=32,  max_nodes_rnn=128,
                         min_hidden_layer_cnn=3, max_hidden_layer_cnn=10, min_nodes_cnn=128, max_nodes_cnn=512,
-                        random_state=42, random_optimizor=True, dropout=0.5,no_of_classes=0):
+                        random_state=42, random_optimizor=True, dropout=0.5,no_of_classes=0, patience = 50):
 
 
     """
@@ -196,7 +196,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_weights_only = False,
                                          save_best_only=True,
                                          mode='max')
-            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = patience)
             callbacks_list = [checkpoint,es]
 
             model_DNN, model_tmp = BuildModel.Build_Model_DNN_Text(x_train_tfidf.shape[1],
@@ -279,7 +279,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_best_only=True,
                                          save_weights_only = False,
                                          mode='max')
-            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = patience)
             callbacks_list = [checkpoint,es]
 
             model_RNN, model_tmp = BuildModel.Build_Model_RNN_Text(word_index,
@@ -368,7 +368,7 @@ def Text_Classification(x_train, y_train, x_test,  y_test, batch_size=128,
                                          save_weights_only = False, verbose=1, 
                                          save_best_only=True,
                                          mode='max')
-            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = 20)
+            es = EarlyStopping(monitor='val_acc', mode='max', verbose=1, patience = patience)
             callbacks_list = [checkpoint,es]
 
             model_history = model_CNN.fit(x_train_embedded, y_train,
